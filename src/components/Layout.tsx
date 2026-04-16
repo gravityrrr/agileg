@@ -1,5 +1,6 @@
-import { Terminal, LayoutDashboard, FileText, Users, BarChart2, Archive, LogOut, BookOpen } from 'lucide-react';
+import { Terminal, LayoutDashboard, FileText, Users, BarChart2, Archive, LogOut, BookOpen, Sun, Moon } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { useTheme } from '../lib/ThemeContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,6 +11,8 @@ interface LayoutProps {
 }
 
 export default function Layout({ children, userRole, userName, activePage, onNavigate }: LayoutProps) {
+  const { theme, toggleTheme } = useTheme();
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
   };
@@ -30,6 +33,7 @@ export default function Layout({ children, userRole, userName, activePage, onNav
         width: 240, flexShrink: 0,
         background: 'var(--bg-secondary)', borderRight: '1px solid var(--border-color)',
         display: 'flex', flexDirection: 'column', padding: '1.25rem 0',
+        transition: 'background 0.3s ease',
       }}>
         {/* User info */}
         <div style={{ padding: '0 1.25rem', marginBottom: '2rem' }}>
@@ -81,6 +85,22 @@ export default function Layout({ children, userRole, userName, activePage, onNav
 
         {/* Bottom */}
         <div style={{ padding: '0 1.25rem', marginTop: 'auto' }}>
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 8, width: '100%',
+              padding: '8px 0', border: 'none', cursor: 'pointer',
+              fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 500,
+              color: 'var(--accent-primary)', background: 'transparent',
+              textTransform: 'uppercase', letterSpacing: '0.05em',
+              transition: 'color 0.15s', marginBottom: 8,
+            }}
+          >
+            {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+            {theme === 'dark' ? 'LIGHT_MODE' : 'DARK_MODE'}
+          </button>
+
           <button
             onClick={handleLogout}
             style={{
@@ -89,7 +109,7 @@ export default function Layout({ children, userRole, userName, activePage, onNav
               fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 500,
               color: 'var(--text-muted)', background: 'transparent',
               textTransform: 'uppercase', letterSpacing: '0.05em',
-              transition: 'color 0.15s', marginTop: 12,
+              transition: 'color 0.15s',
             }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent-danger)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
@@ -107,16 +127,19 @@ export default function Layout({ children, userRole, userName, activePage, onNav
           height: 56, borderBottom: '1px solid var(--border-color)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '0 2rem', flexShrink: 0,
+          transition: 'border-color 0.3s ease',
         }}>
           <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--accent-primary)', fontSize: '0.85rem', letterSpacing: '0.1em' }}>
             SKILL_CORE_OS
           </div>
-          <div style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 700, padding: '4px 12px',
-            border: '1px solid var(--border-color)', color: 'var(--text-secondary)',
-            textTransform: 'uppercase', letterSpacing: '0.05em',
-          }}>
-            SYSTEM_ACTIVE
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{
+              fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 700, padding: '4px 12px',
+              border: '1px solid var(--border-color)', color: 'var(--text-secondary)',
+              textTransform: 'uppercase', letterSpacing: '0.05em',
+            }}>
+              SYSTEM_ACTIVE
+            </div>
           </div>
         </header>
 

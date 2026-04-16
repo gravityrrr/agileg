@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { supabase } from './lib/supabase';
+import { ThemeProvider } from './lib/ThemeContext';
 import Login from './pages/Login';
 import DashboardRouter from './pages/DashboardRouter';
 
@@ -32,18 +33,20 @@ function App() {
   }
 
   return (
-    <Router>
-      <Routes>
-        <Route 
-          path="/" 
-          element={!session ? <Login /> : <Navigate to="/dashboard" />} 
-        />
-        <Route 
-          path="/dashboard/*" 
-          element={session ? <DashboardRouter session={session} /> : <Navigate to="/" />} 
-        />
-      </Routes>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <Routes>
+          <Route 
+            path="/" 
+            element={!session ? <Login /> : <Navigate to="/dashboard" />} 
+          />
+          <Route 
+            path="/dashboard/*" 
+            element={session ? <DashboardRouter session={session} /> : <Navigate to="/" />} 
+          />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 

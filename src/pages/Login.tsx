@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Terminal, Lock, User } from 'lucide-react';
+import { useTheme } from '../lib/ThemeContext';
+import { Terminal, Lock, User, Sun, Moon } from 'lucide-react';
 
 export default function Login() {
+  const { theme, toggleTheme } = useTheme();
   const [activeTab, setActiveTab] = useState<'student' | 'instructor' | 'admin'>('student');
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
@@ -60,10 +62,24 @@ export default function Login() {
         padding: '3rem 3rem 3rem 6rem',
         borderRight: '1px solid var(--border-color)',
       }}>
-        {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontFamily: 'var(--font-mono)', fontWeight: 700, letterSpacing: '0.15em', color: 'var(--accent-primary)', textTransform: 'uppercase' as const, fontSize: '0.85rem' }}>
-          <Terminal size={22} />
-          SKILL_CORE_OS
+        {/* Logo + theme toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontFamily: 'var(--font-mono)', fontWeight: 700, letterSpacing: '0.15em', color: 'var(--accent-primary)', textTransform: 'uppercase' as const, fontSize: '0.85rem' }}>
+            <Terminal size={22} />
+            SKILL_CORE_OS
+          </div>
+          <button
+            onClick={toggleTheme}
+            style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: 36, height: 36, border: '1px solid var(--border-color)',
+              background: 'var(--card-bg)', color: 'var(--accent-primary)',
+              cursor: 'pointer', transition: 'all 0.2s ease',
+            }}
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
         </div>
 
         {/* Hero text */}
@@ -72,7 +88,7 @@ export default function Login() {
           <h1 style={{ fontFamily: 'var(--font-sans)', fontWeight: 800, fontSize: 'clamp(3rem, 6vw, 5.5rem)', lineHeight: 0.95, letterSpacing: '-0.04em', color: 'var(--text-primary)', marginBottom: 12 }}>
             DECODE_<br/>POTENTIAL
           </h1>
-          <div style={{ width: 80, height: 3, background: '#fff', marginBottom: 28 }} />
+          <div style={{ width: 80, height: 3, background: 'var(--text-primary)', marginBottom: 28 }} />
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.2em', lineHeight: 2, textTransform: 'uppercase' as const }}>
             SYSTEMIC TALENT ASSESSMENT &amp;<br/>
             OPERATIONAL INTELLIGENCE PROTOCOL V4.0.2
